@@ -1,0 +1,12 @@
+[Unit]
+Description=Linux zramswap setup
+
+[Service]
+EnvironmentFile=-/etc/default/zramswap
+ExecStart=/usr/sbin/zramswap start
+ExecReload=/usr/sbin/zramswap restart
+Type=oneshot
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target

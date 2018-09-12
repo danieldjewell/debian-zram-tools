@@ -6,7 +6,8 @@
 #  * Space is assigned to each zram device, then swap is initialized on
 #    there
 # zramswap stop:
-#  * Somewhat potentially dangerous, removes zram module at the end
+#  * Also attempts to remove zram module at the end
+
 
 function start {
     #Set some defaults:

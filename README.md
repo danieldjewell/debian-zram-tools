@@ -1,7 +1,9 @@
 zram-tools
 ==========
 
-Scripts for managing zram devices, currently only for zramswap.
+Scripts for managing zram devices, currently only for zramswap,
+but more tools could be implemented in the future, such as managing
+/tmp on zram.
 
 zramswap start
 --------------
@@ -24,4 +26,4 @@ shows information on data stored in zram swap.
 /etc/default/zramswap
 ---------------------
 
-Configuration file for zramswap
+Configuration file for zramswap.
