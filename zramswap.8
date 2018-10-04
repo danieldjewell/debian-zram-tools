@@ -1,0 +1,55 @@
+.TH "zramswap" 1 "2018-10-04" "zramswap"
+.SH NAME
+zramswap \- configure swap on zram
+.SH SYNOPSIS
+.B zramswap
+[OPTION]
+.SH DESCRIPTION
+zram is a Linux feature that allows a user to create compressed ramdisks.
+
+zramswap sets up swap in zram, which effectively allows you to compress
+memory.
+
+Common use cases:
+
+On machines with low memory, mitigates the tedious situation where the
+machine is out of memory and then it starts swapping to disk only to lose
+a large amount of disk bandwidth.
+
+On machines where the main swap file is on flash memory, zramswap may only
+provide marginal performance increase (especially on fast SSD media),
+however, it will prevent some amount of wear on your flash memory. zramswap
+is especially beneficial if your main flash is on SD/MMC/CF card.
+
+On servers that run many virtual machines or containers, zramswap allows you to
+optimise memory usage by swapping out data that's not often accessed, but when
+a user needs to access it, it will be available fast. It allows you to
+overcommit on memory with a negligable hit on your application performance
+(and often an improvement in performance where you can use more main memory
+for filesystem cache).
+
+.SH OPTIONS
+Usage: zramswap [OPTION]
+
+.B ZRAMSWAP Options
+
+\fB\ start\fR
+.RS
+Sets up zram swap.
+.RE
+
+\fB\ stop\fR
+.RS
+Tears down zram swap.
+.RE
+
+\fB\ status\fR
+.RS
+Displays zram swap usage and compression ratio.
+.RE
+
+.SH REPORTING BUGS
+Please file issues at: https://salsa.debian.org/jcc/zram-tools/issues
+
+.SH AUTHORS
+This manual page was written by Jonathan Carter <jcarter@linux.com>
