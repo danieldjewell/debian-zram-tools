@@ -11,7 +11,7 @@
 
 function start {
     #Set some defaults:
-    ALLOCATION=100 # ZRAM Swap you want assigned, in MiB
+    ALLOCATION=256 # ZRAM Swap you want assigned, in MiB
     PRIORITY=100   # Swap priority, see swapon(2) for more details
 
     # Get amount of available CPU cores, set to 1 if not detected correctly

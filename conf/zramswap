@@ -12,4 +12,4 @@
 
 # Specifies the priority for the swap devices, see swapon(2)
 # for more details.
-#PRIORITY=50
+#PRIORITY=100
