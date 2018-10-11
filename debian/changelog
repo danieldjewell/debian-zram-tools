@@ -1,7 +1,7 @@
-zram-tools (0.3.2-1) U  unstable; urgency=medium
+zram-tools (0.3.2-1) unstable; urgency=medium
 
   * New upstream release
-    (Closes: #910644, #910647)
+    (Closes: #910644, #910647, #910645)
   * debian/copyright: Fix trailing whitespace
   * debian/control:
     - Fix trailing whitespace
