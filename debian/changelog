@@ -1,0 +1,17 @@
+zram-tools (0.3.2-1) U  unstable; urgency=medium
+
+  * New upstream release
+    (Closes: #910644, #910647)
+  * debian/copyright: Fix trailing whitespace
+  * debian/control:
+    - Fix trailing whitespace
+    - Fix Vcs-Git field
+
+ -- Jonathan Carter <jcc@debian.org>  Thu, 11 Oct 2018 11:51:26 +0200
+
+zram-tools (0.3.1-1) unstable; urgency=low
+
+  * Initial release (Closes: #847833)
+
+ -- Jonathan Carter <jcc@debian.org>  Wed, 12 Sep 2018 11:23:50 +0200
+

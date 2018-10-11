@@ -1,0 +1,3 @@
+zramswap usr/sbin
+zramswap.conf etc/default
+zramswap.service lib/systemd/system
