@@ -48,14 +48,20 @@ function start {
 }
 
 function status {
-    for f in /sys/block/zram*/*_data_size ; do
-        read size < $f
-        what=$(basename $f)
-        eval "$what=\$(($what + $size))"
+    orig_data_size="0"
+    for file in /sys/block/zram*/*_data_size ; do
+        if [ $file = "/sys/block/zram*/*_data_size" ]; then
+            compress_ratio="0"
+            break
+        fi
+        read file_content < $file
+        what=$(basename $file)
+        eval "$what=\$(($what + $file_content))"
+        compress_ratio=$(echo "scale=2; $orig_data_size / $compr_data_size" | bc)
     done
     echo "compr_data_size: $((compr_data_size / 1024)) KiB"
     echo "orig_data_size:  $((orig_data_size  / 1024)) KiB"
-    echo "print \"compression-ratio: \"; scale=2; $orig_data_size / $compr_data_size" | bc
+    echo "compression-ratio: $compress_ratio"
 }
 
 function stop {
