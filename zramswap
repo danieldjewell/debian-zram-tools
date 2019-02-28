@@ -1,13 +1,18 @@
 #!/bin/bash
 # This script does the following:
 # zramswap start:
-#  * zram doesn't natively support multiple CPU cores, so one zram device
-#    is created for every CPU core minus one)
 #  * Space is assigned to each zram device, then swap is initialized on
 #    there
 # zramswap stop:
+#  * Undo start
 #  * Also attempts to remove zram module at the end
-
+# TODO:
+# * Migrate to using zramctl from util-linux for the setup,
+#   (this will close debian bug #917643):
+#   then also:
+#   - add option for compression algorythm
+#   - ammount of compression streams
+#   - Make use of the zramctl stats too
 
 function start {
     #Set some defaults:
@@ -18,9 +23,9 @@ function start {
     if [ ! -f /proc/cpuinfo ]; then
         echo "WARNING: Can't find /proc/cpuinfo, is proc mounted?"
         echo "         Using a single core for zramswap..."
-        cores=1
+        CORES=1
     else
-        cores=$(grep -c processor /proc/cpuinfo)
+        CORES=$(grep -c ^processor /proc/cpuinfo)
     fi
 
     # Override  above from config file, if it exists
@@ -35,15 +40,15 @@ function start {
         ALLOCATION=$((totalmemory * 1024 * $PERCENTAGE / 100))
     fi
 
-    # Initialize zram devices, one device per CPU core
-    modprobe zram num_devices=$cores
+    # Initialize zram devices
+    modprobe zram num_devices=$CORES
 
     # Assign memory to zram devices, initialize swap and activate
-    # Decrementing $core, because cores start counting at 0
-    for core in $(seq 0 $(($cores - 1))); do
-        echo $(($ALLOCATION / $cores)) > /sys/block/zram$core/disksize
-        mkswap /dev/zram$core
-        swapon -p $PRIORITY /dev/zram$core
+    # Decrementing $CORE, because cores start counting at 0
+    for CORE in $(seq 0 $(($CORES - 1))); do
+        echo $(($ALLOCATION / $CORES)) > /sys/block/zram$CORE/disksize
+        mkswap /dev/zram$CORE
+        swapon -p $PRIORITY /dev/zram$CORE
     done
 }
 
