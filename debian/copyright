@@ -3,11 +3,11 @@ Upstream-Name: zram-tools
 Source: https://salsa.debian.org/jcc/zram-tools
 
 Files: *
-Copyright: 2014-2018 Jonathan Carter <jcarter@linux.com>
+Copyright: 2014-2019 Jonathan Carter <jcarter@linux.com>
 License: ISC
 
 Files: debian/*
-Copyright: 2015-2018 Jonathan Carter <jcc@debian.org>
+Copyright: 2015-2019 Jonathan Carter <jcc@debian.org>
 License: ISC
 
 License: ISC

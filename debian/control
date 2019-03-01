@@ -2,8 +2,8 @@ Source: zram-tools
 Section: utils
 Priority: optional
 Maintainer: Jonathan Carter <jcc@debian.org>
-Build-Depends: debhelper (>=11)
-Standards-Version: 4.2.1
+Build-Depends: debhelper-compat (= 12)
+Standards-Version: 4.3.0
 Homepage: https://github.com/highvoltage/zram-tools
 Vcs-Browser: https://salsa.debian.org/debian/zram-tools
 Vcs-Git: https://salsa.debian.org/debian/zram-tools.git
@@ -22,4 +22,4 @@ Description: utilities for working with zram
  bandwidth.
  .
  By default it allocates 100MB of RAM, you can configure this in
- /etc/default/zramswap.conf
+ /etc/default/zramswap.
