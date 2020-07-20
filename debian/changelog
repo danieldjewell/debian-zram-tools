@@ -1,0 +1,28 @@
+zram-tools (0.3.2.1-1) unstable; urgency=medium
+
+  * New upstream release
+    (Closes: #911748, #911746, #911747)
+  * Fix package description
+    (Closes: #913611)
+  * Upgrade to debhelper-compat (= 12)
+  * Update standards version to 4.3.0
+
+ -- Jonathan Carter <jcc@debian.org>  Thu, 28 Feb 2019 07:15:58 +0000
+
+zram-tools (0.3.2-1) unstable; urgency=medium
+
+  * New upstream release
+    (Closes: #910644, #910647, #910645)
+  * debian/copyright: Fix trailing whitespace
+  * debian/control:
+    - Fix trailing whitespace
+    - Fix Vcs-Git field
+
+ -- Jonathan Carter <jcc@debian.org>  Thu, 11 Oct 2018 11:51:26 +0200
+
+zram-tools (0.3.1-1) unstable; urgency=low
+
+  * Initial release (Closes: #847833)
+
+ -- Jonathan Carter <jcc@debian.org>  Wed, 12 Sep 2018 11:23:50 +0200
+

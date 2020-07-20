@@ -1,0 +1,2 @@
+version=4
+https://salsa.debian.org/jcc/zram-tools/tags .*/zram-tools-(.*)\.tar\.gz
