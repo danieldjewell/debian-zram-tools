@@ -19,14 +19,19 @@ function start {
     ALLOCATION=256 # ZRAM Swap you want assigned, in MiB
     PRIORITY=100   # Swap priority, see swapon(2) for more details
 
+    ZRAM_SWAP_COMPRESSION="zstd"
+
     # Get amount of available CPU cores, set to 1 if not detected correctly
-    if [ ! -f /proc/cpuinfo ]; then
-        echo "WARNING: Can't find /proc/cpuinfo, is proc mounted?"
-        echo "         Using a single core for zramswap..."
-        CORES=1
-    else
-        CORES=$(grep -c ^processor /proc/cpuinfo)
-    fi
+    #if [ ! -f /proc/cpuinfo ]; then
+    #    echo "WARNING: Can't find /proc/cpuinfo, is proc mounted?"
+    #    echo "         Using a single core for zramswap..."
+    #    CORES=1
+    #else
+    #    CORES=$(grep -c ^processor /proc/cpuinfo)
+    #fi
+
+    # zramctl automatically uses all available cores
+    # only need to set it if CORES/THREADS is set 
 
     # Override  above from config file, if it exists
     if [ -f /etc/default/zramswap ]; then
@@ -36,23 +41,45 @@ function start {
     ALLOCATION=$((ALLOCATION * 1024 * 1024)) # convert amount from MiB to bytes
 
     if [ -n "$PERCENTAGE" ]; then
-        totalmemory=$(awk '/MemTotal/{print $2}' /proc/meminfo) # in KiB
+        #totalmemory=$(awk '/MemTotal/{print $2}' /proc/meminfo) # in KiB
+        totalmemory=$(grep '^MemTotal:' /proc/meminfo | awk '{ print $2 }')
         ALLOCATION=$((totalmemory * 1024 * $PERCENTAGE / 100))
     fi
 
     # Initialize zram devices
-    modprobe zram num_devices=$CORES
+    # modprobe zram num_devices=$CORES
+    modprobe zram
 
     # Assign memory to zram devices, initialize swap and activate
     # Decrementing $CORE, because cores start counting at 0
-    for CORE in $(seq 0 $(($CORES - 1))); do
-        echo $(($ALLOCATION / $CORES)) > /sys/block/zram$CORE/disksize
-        mkswap /dev/zram$CORE
-        swapon -p $PRIORITY /dev/zram$CORE
-    done
+    #for CORE in $(seq 0 $(($CORES - 1))); do
+    #    echo $(($ALLOCATION / $CORES)) > /sys/block/zram$CORE/disksize
+    #    mkswap /dev/zram$CORE
+    #    swapon -p $PRIORITY /dev/zram$CORE
+    #done
+
+    # When run with the -f parameter, zramctl will find the first free 
+    # device and return it
+    zram_launch="zramctl -f -s $ALLOCATION -a $ZRAM_SWAP_COMPRESSION"
+    if [ -n "$CORES" ]; then 
+        # In zramctl parlance; cores are "streams"
+        # zramctl will use all cores by default... 
+        zram_launch="$zram_launch -t $CORES"
+    fi
+
+    zram_dev=$($zram_launch)
+    if [ -z "$zram_dev" ]; then
+        echo "[zramswap] Error creating zram swap device "
+        return 1
+    else
+        mkswap $zram_dev
+        swapon -p $PRIORITY $zram_dev
+    fi
+    
 }
 
 function status {
+   #TODO: Broken because it assumes that *all* zram devices are swap devices
     orig_data_size="0"
     for file in /sys/block/zram*/*_data_size ; do
         if [ $file = "/sys/block/zram*/*_data_size" ]; then
@@ -72,8 +99,11 @@ function status {
 function stop {
     for swapspace in $(swapon -s | awk '/zram/{print $1}'); do
         swapoff $swapspace
+        #zramctl -r deletes the zram device without touching other zram volumes
+        zramctl -r $swapspace 
     done
-    modprobe -r zram
+    # Really bad idea to completely remove the device
+    #modprobe -r zram
 }
 
 function usage {
