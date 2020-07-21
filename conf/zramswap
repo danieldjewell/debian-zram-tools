@@ -13,3 +13,20 @@
 # Specifies the priority for the swap devices, see swapon(2)
 # for more details.
 #PRIORITY=100
+
+# Specifies compression algorithm to use
+# By default, it's zstd 
+# zram utilizes the kernel's crypto/compress interface
+# to utilize other algorithms, you'll need the appropriate kernel module
+# or have that algorithm built in 
+# The <compressionAlgorithm>_compress.ko module is the required file
+# 
+# Try checking /lib/modules/<version>/kernel to see what's available 
+# e.g. in the kernel dir: find . -iname '*compress*' 
+# Typically, lz4, lz4hc, and zstd are in recent kernels
+# Others might be built-in
+#
+# You can try checking the /lib/modules/<version>/kernel/modules.builtin 
+# file to see what's in there: cat modules.builtin | grep compress
+#
+# ZRAM_SWAP_COMPRESSION="zstd"
