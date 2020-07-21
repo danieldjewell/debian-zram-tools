@@ -2,7 +2,7 @@ zram-tools (0.4-1) unstable; urgency=high
   
   * Updates to use zramctl
 
--- Daniel Jewell <23286051+danieldjewell@users.noreply.github.com>  Mon, 21 Jul 2020 00:05:00 +0000
+ -- Daniel Jewell <23286051+danieldjewell@users.noreply.github.com>  Tue, 21 Jul 2020 00:05:00 +0000
 
 zram-tools (0.3.2.1-1) unstable; urgency=medium
 
